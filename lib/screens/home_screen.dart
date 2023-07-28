@@ -3,7 +3,6 @@ import 'package:image_picker/image_picker.dart';
 //import 'package:petow_app/layout/camera.dart';
 import 'package:petow_app/screens/send_messages.dart';
 
-
 import 'about_the_app.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,12 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
           'assets/png/ic_petow.png',
           fit: BoxFit.contain,
           height: kToolbarHeight,
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.camera_alt_outlined),
-          onPressed: () {
-            Navigator.pop(context, ImageSource.camera);
-          },
         ),
         actions: [
           IconButton(
