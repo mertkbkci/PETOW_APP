@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>28122149119-1sc76ovi3pka9r9s6jq4je8s529ame71.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.28122149119-1sc76ovi3pka9r9s6jq4je8s529ame71</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDybJN6mgTD73e1COTy9R-U2mXanz_orU4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>28122149119</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.petowApp</string>
+	<key>PROJECT_ID</key>
+	<string>flutter-petow</string>
+	<key>STORAGE_BUCKET</key>
+	<string>flutter-petow.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:28122149119:ios:5c38923ecbfef70d2e1cca</string>
+</dict>
+</plist>

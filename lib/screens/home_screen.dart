@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+
 //import 'package:petow_app/layout/camera.dart';
 import 'package:petow_app/screens/send_messages.dart';
 
@@ -22,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Image.asset(
           'assets/png/ic_petow.png',
           fit: BoxFit.contain,

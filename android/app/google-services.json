@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "28122149119",
+    "project_id": "flutter-petow",
+    "storage_bucket": "flutter-petow.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:28122149119:android:a3586646dc2ae8542e1cca",
+        "android_client_info": {
+          "package_name": "com.example.petow_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "28122149119-ib5mmkkl3igjf3oiorh3ddb819fvjkk3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDU0opMpFerNnhv3o3BTw12xY5E2SOzKPI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "28122149119-ib5mmkkl3igjf3oiorh3ddb819fvjkk3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
