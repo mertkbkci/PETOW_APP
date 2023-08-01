@@ -1,8 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:petow_app/screens/page_view.dart';
 import 'package:petow_app/screens/register_screen.dart';
 //import 'package:test_application/demos/petow_home.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -14,7 +14,38 @@ class LoginScreen extends StatefulWidget {
 class _PetowSignInScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
- 
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  Future<void> _login(BuildContext context) async {
+    try {
+      // ignore: unused_local_variable
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text,
+      );
+      setState(() {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const PetowPageView(),
+          ),
+        );
+      });
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found' || e.code == 'wrong-password') {
+        // ignore: avoid_print
+        print('Geçersiz e-posta veya şifre.');
+      } else {
+        // ignore: avoid_print
+        print('Bir hata oluştu: ${e.message}');
+      }
+    } catch (e) {
+      // ignore: avoid_print
+      print('Bir hata oluştu: $e');
+    }
+  }
 
   @override
   void initState() {
@@ -30,13 +61,14 @@ class _PetowSignInScreenState extends State<LoginScreen> with SingleTickerProvid
   @override
   void dispose() {
     _animationController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -47,35 +79,29 @@ class _PetowSignInScreenState extends State<LoginScreen> with SingleTickerProvid
                     padding: const EdgeInsets.only(top: 200, bottom: 30),
                     child: FadeTransition(
                       opacity: _animation,
-                      child: Image.asset('assets/png/ic_petow.png')
+                      child: Image.asset('assets/png/ic_petow.png'),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 15, right: 15),
-                    child: TextField(maxLength: 50, decoration: _SignInInputDecorator().signInTextFieldDecoration3),
+                    child: TextFormField(
+                      maxLength: 50,
+                      decoration: _SignInInputDecorator().signInTextFieldDecoration3,
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 15, right: 15),
-                    child: TextField(
-                    obscureText: true,
-                    maxLength: 50, decoration: _SignInInputDecorator().signInTextFieldDecoration4,
-                      ),
+                    child: TextFormField(
+                      obscureText: true,
+                      maxLength: 50,
+                      decoration: _SignInInputDecorator().signInTextFieldDecoration4,
+                    ),
                   ),
-                  
-                  
-                  
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => const PetowPageView(),
-                                        ),
-                                        );
-                    },
+                  ElevatedButton(
+                    onPressed: () => _login(context),
                     child: const Text(
                       'Giriş Yap',
-                      style: TextStyle(color: Colors.blue),
+                      style: TextStyle(color: Colors.black),
                     ),
                   )
                 ],
@@ -83,10 +109,10 @@ class _PetowSignInScreenState extends State<LoginScreen> with SingleTickerProvid
               TextButton(
                 onPressed: () {
                   Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                  builder: (context) => const RegisterScreen(),
-                  ));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RegisterScreen(),
+                      ));
                 },
                 child: const Text(
                   'Hala hesabın yok mu? Kayıt ol',
@@ -101,8 +127,6 @@ class _PetowSignInScreenState extends State<LoginScreen> with SingleTickerProvid
   }
 }
 
-
-
 class _SignInInputDecorator {
   final signInTextFieldDecoration3 = const InputDecoration(
     border: OutlineInputBorder(),
@@ -115,6 +139,5 @@ class _SignInInputDecorator {
     prefix: Icon(Icons.password_outlined),
     filled: false,
     labelText: 'Şifre',
-   
   );
 }
