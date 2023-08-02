@@ -17,35 +17,45 @@ class _PetowSignInScreenState extends State<LoginScreen> with SingleTickerProvid
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
+ final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
   Future<void> _login(BuildContext context) async {
-    try {
-      // ignore: unused_local_variable
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text,
+  try {
+    UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text,
+    );
+    _navigatorKey.currentState?.pushReplacement(
+      
+      MaterialPageRoute(
+        builder: (context) => const PetowPageView(),
+      ),
+    );
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'user-not-found' || e.code == 'wrong-password') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Geçersiz e-posta veya şifre.'),
+          duration: Duration(seconds: 3),
+        ),
       );
-      setState(() {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const PetowPageView(),
-          ),
-        );
-      });
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found' || e.code == 'wrong-password') {
-        // ignore: avoid_print
-        print('Geçersiz e-posta veya şifre.');
-      } else {
-        // ignore: avoid_print
-        print('Bir hata oluştu: ${e.message}');
-      }
-    } catch (e) {
-      // ignore: avoid_print
-      print('Bir hata oluştu: $e');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Bir hata oluştu: ${e.message}'),
+          duration: const Duration(seconds: 3),
+        ),
+      );
     }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Bir hata oluştu: $e'),
+        duration: const Duration(seconds: 3),
+      ),
+    );
   }
+}
+
 
   @override
   void initState() {

@@ -1,7 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-// import 'package:test_application/demos/petow_home.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'login_screen.dart';
@@ -10,10 +8,10 @@ class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  State<RegisterScreen> createState() => _PetowSignInScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _PetowSignInScreenState extends State<RegisterScreen> with SingleTickerProviderStateMixin {
+class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
 
@@ -35,7 +33,7 @@ class _PetowSignInScreenState extends State<RegisterScreen> with SingleTickerPro
       String? fullName = fullNameController.text.trim();
       String? username = usernameController.text.trim();
 
-      DatabaseReference usersRef = FirebaseDatabase.instance.ref().child('users');
+      DatabaseReference usersRef = FirebaseDatabase.instance.ref().child('users'); 
 
       await usersRef.child(uid).set({
         'full_name': fullName,
@@ -43,35 +41,38 @@ class _PetowSignInScreenState extends State<RegisterScreen> with SingleTickerPro
         'email': emailController.text.trim(),
       });
 
+      // Kayıt başarılı oldu, login ekranına yönlendir
       _navigatorKey.currentState!.pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
+      ),
+    );
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = 'Bir hata oluştu.';
+
+      if (e.code == 'weak-password') {
+        errorMessage = 'Şifre zayıf.';
+      } else if (e.code == 'email-already-in-use') {
+        errorMessage = 'Bu e-posta adresi zaten kullanımda.';
+      } else {
+        errorMessage = 'Bir hata oluştu: ${e.message}';
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+          duration: const Duration(seconds: 3),
         ),
       );
-    } on FirebaseAuthException catch (e) {
-       String errorMessage = 'Bir hata oluştu.';
-
-    if (e.code == 'weak-password') {
-      errorMessage = 'Şifre zayıf.';
-    } else if (e.code == 'email-already-in-use') {
-      errorMessage = 'Bu e-posta adresi zaten kullanımda.';
-    } else {
-      errorMessage = 'Bir hata oluştu: ${e.message}';
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Bir hata oluştu: $e'),
+          duration: const Duration(seconds: 3),
+        ),
+      );
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(errorMessage),
-        duration: const Duration(seconds: 3),
-      ),
-    );
-  } catch (e) { ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Bir hata oluştu: $e'),
-        duration: const Duration(seconds: 3),
-      ),
-    );
   }
-}
 
   @override
   void initState() {
@@ -111,16 +112,18 @@ class _PetowSignInScreenState extends State<RegisterScreen> with SingleTickerPro
                   Padding(
                     padding: const EdgeInsets.only(left: 15, right: 15),
                     child: TextFormField(
-                        controller: fullNameController,
-                        maxLength: 50,
-                        decoration: _RegisterInputDecorator().signInTextFieldDecoration),
+                      controller: fullNameController,
+                      maxLength: 50,
+                      decoration: _RegisterInputDecorator().signInTextFieldDecoration,
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 15, right: 15),
                     child: TextFormField(
-                        controller: usernameController,
-                        maxLength: 50,
-                        decoration: _RegisterInputDecorator().signInTextFieldDecoration2),
+                      controller: usernameController,
+                      maxLength: 50,
+                      decoration: _RegisterInputDecorator().signInTextFieldDecoration2,
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 15, right: 15),
@@ -170,13 +173,13 @@ class _RegisterInputDecorator {
     border: OutlineInputBorder(),
     prefix: Icon(Icons.abc_outlined),
     filled: false,
-    labelText: 'Kullanıcı Adı',
+    labelText: 'username',
   );
   final signInTextFieldDecoration2 = const InputDecoration(
     border: OutlineInputBorder(),
     prefix: Icon(Icons.abc_outlined),
     filled: false,
-    labelText: 'Ad Soyad',
+    labelText: 'full_name',
   );
   final signInTextFieldDecoration3 = const InputDecoration(
     border: OutlineInputBorder(),
