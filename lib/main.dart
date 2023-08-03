@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:petow_app/firebase_options.dart';
 //import 'package:petow_app/screens/login_screen.dart';
 import 'package:petow_app/screens/page_view.dart';
+import 'package:petow_app/screens/register_screen.dart';
 
 //import 'layout/camera.dart';
 // import 'firebase_options.dart';
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
         // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         // useMaterial3: true,
       ),
-      home: const PetowPageView(),
+      home: const RegisterScreen(),
     );
   }
 }

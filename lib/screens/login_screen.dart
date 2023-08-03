@@ -17,19 +17,22 @@ class _PetowSignInScreenState extends State<LoginScreen> with SingleTickerProvid
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
- final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+ 
   Future<void> _login(BuildContext context) async {
   try {
     UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+       
       email: emailController.text.trim(),
       password: passwordController.text,
     );
-    _navigatorKey.currentState?.pushReplacement(
-      
-      MaterialPageRoute(
-        builder: (context) => const PetowPageView(),
-      ),
-    );
+    String? uid = userCredential.user!.uid;
+    if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const PetowPageView(),
+          ),
+        );
+      }
   } on FirebaseAuthException catch (e) {
     if (e.code == 'user-not-found' || e.code == 'wrong-password') {
       ScaffoldMessenger.of(context).showSnackBar(

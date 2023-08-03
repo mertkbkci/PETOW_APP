@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:petow_app/screens/page_view.dart';
 
 import 'login_screen.dart';
 
@@ -20,8 +21,6 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
 
-  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
-
   void _register(BuildContext context) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -33,7 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
       String? fullName = fullNameController.text.trim();
       String? username = usernameController.text.trim();
 
-      DatabaseReference usersRef = FirebaseDatabase.instance.ref().child('users'); 
+      DatabaseReference usersRef = FirebaseDatabase.instance.ref().child('users');
 
       await usersRef.child(uid).set({
         'full_name': fullName,
@@ -41,12 +40,13 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
         'email': emailController.text.trim(),
       });
 
-      // Kayıt başarılı oldu, login ekranına yönlendir
-      _navigatorKey.currentState!.pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => const LoginScreen(),
-      ),
-    );
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const PetowPageView(),
+          ),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       String errorMessage = 'Bir hata oluştu.';
 
