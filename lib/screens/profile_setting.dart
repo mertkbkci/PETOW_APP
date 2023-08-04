@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:petow_app/utils/camera_utils.dart';
+
 //import 'package:camera/camera.dart';
 
 class ProfileSettingScreen extends StatefulWidget {
@@ -14,19 +15,10 @@ class ProfileSettingScreen extends StatefulWidget {
 
 class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
   String? _selectedGender;
- late File? _image;
-  Future<void> _pickImageFromGallery() async {
-   
-    final imagePicker = ImagePicker();
-    final pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
-
-    if (pickedImage != null) {
-      setState(() {
-        _image = File(pickedImage.path);
-      },
-     );
-    }
-  }
+  late File? _image;
+  late Image image = Image.asset(
+    'assets/png/ic_cat4.jpg',
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -58,22 +50,35 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 0, top: 20),
-              child: CircleAvatar(
-                maxRadius: 75,
-                child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.account_circle_outlined,
-                    size: 135,
+              child: Container(
+                width: 175,
+                height: 175,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  border: Border.all(
+                    color: Colors.blue,
+                    width: 2,
                   ),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: image,
                 ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 0),
               child: TextButton(
-                onPressed: () {
-                  _pickImageFromGallery();
+                onPressed: () async {
+                  final result = await CameraUtils.showImageSelectBottomSheet(context);
+                  if (result != null) {
+                    setState(() {
+                      image = Image.file(
+                        result,
+                        fit: BoxFit.cover,
+                      );
+                    });
+                  }
                 },
                 child: const Text(
                   'Profil Fotoğrafını Değiştir',
@@ -174,6 +179,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
       ),
     );
   }
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);

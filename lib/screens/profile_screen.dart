@@ -3,7 +3,10 @@ import 'package:petow_app/screens/login_screen.dart';
 import 'package:petow_app/screens/profile_setting.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  final String? uid;
+  final String? username;
+  final String? fullName;
+  const ProfileScreen({Key? key, this.uid, this.username, this.fullName}) : super(key: key);
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -20,8 +23,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     currentIndex = index;
     _pageController.jumpToPage(
       currentIndex,
-      // duration: const Duration(milliseconds: 400),
-      // curve: Curves.bounceInOut,
     );
 
     setState(() {});
@@ -38,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kullanici_adi'),
+        title: Text(' ${widget.username}'),
         centerTitle: false,
         automaticallyImplyLeading: false,
         actions: [
@@ -54,9 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ListTile(
                         leading: const Icon(Icons.settings),
                         title: const Text('Ayarlar'),
-                        onTap: () {
-                          
-                        },
+                        onTap: () {},
                       ),
                       ListTile(
                         leading: const Icon(Icons.bookmark_border_outlined),
@@ -99,9 +98,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Column(
+                      Column(
                         children: [
-                          CircleAvatar(
+                          const CircleAvatar(
                             radius: 75,
                             child: Icon(
                               Icons.account_circle_outlined,
@@ -109,14 +108,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 0, top: 25),
+                            padding: const EdgeInsets.only(left: 0, top: 25),
                             child: Text(
-                              'Tam adı',
+                              ' ${widget.fullName}',
                               style: textStyle,
                               textAlign: TextAlign.start,
                             ),
                           ),
-                          Text('Bio', textAlign: TextAlign.start),
+                          const Text('Bio', textAlign: TextAlign.start),
                         ],
                       ),
                       const SizedBox(width: 10),
@@ -220,11 +219,11 @@ Future<void> _showLogoutDialog(BuildContext context) async {
             child: const Text('Evet'),
             onPressed: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginScreen(),
-                  ),
-                  );
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginScreen(),
+                ),
+              );
             },
           ),
         ],

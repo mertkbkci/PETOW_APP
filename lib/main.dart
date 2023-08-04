@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
           systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
             statusBarIconBrightness: Brightness.dark,
+            
           ),
         ),
 
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
         // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         // useMaterial3: true,
       ),
-      home: const RegisterScreen(),
+      home: const PetowPageView(),
     );
   }
 }

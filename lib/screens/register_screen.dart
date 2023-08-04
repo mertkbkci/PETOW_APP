@@ -1,9 +1,10 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:petow_app/screens/page_view.dart';
 
-import 'login_screen.dart';
+import 'package:petow_app/screens/profile_screen.dart';
+
+
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -28,13 +29,13 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
         password: passwordController.text,
       );
 
-      String? uid = userCredential.user!.uid;
+      String? uid = userCredential.user?.uid;
       String? fullName = fullNameController.text.trim();
       String? username = usernameController.text.trim();
 
       DatabaseReference usersRef = FirebaseDatabase.instance.ref().child('users');
 
-      await usersRef.child(uid).set({
+      await usersRef.child(uid ?? '').set({
         'full_name': fullName,
         'username': username,
         'email': emailController.text.trim(),
@@ -43,7 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
       if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => const PetowPageView(),
+            builder: (context) =>  ProfileScreen(uid: uid, fullName: fullName, username: username),
           ),
         );
       }
