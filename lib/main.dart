@@ -5,6 +5,8 @@ import 'package:petow_app/firebase_options.dart';
 //import 'package:petow_app/screens/login_screen.dart';
 import 'package:petow_app/screens/page_view.dart';
 import 'package:petow_app/screens/register_screen.dart';
+import 'package:petow_app/theme/change_theme.dart';
+import 'package:provider/provider.dart';
 
 //import 'layout/camera.dart';
 // import 'firebase_options.dart';
@@ -25,7 +27,14 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<ThemeChanger>(
+        create: (context) => ThemeChanger(),
+      ),
+    ],
+    builder: (contex, child) => const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -36,22 +45,23 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(useMaterial3: true).copyWith(
-        progressIndicatorTheme: const ProgressIndicatorThemeData(color: Colors.black),
-        appBarTheme: const AppBarTheme(
-          centerTitle: true,
-          backgroundColor: Colors.transparent,
-          systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.dark,
-            
-          ),
-        ),
+      theme: context.watch<ThemeChanger>().currentTheme,
+      //ThemeData.light(useMaterial3: true).copyWith(
+      //   progressIndicatorTheme: const ProgressIndicatorThemeData(color: Colors.black),
+      //   appBarTheme: const AppBarTheme(
+      //     centerTitle: true,
+      //     backgroundColor: Colors.transparent,
+      //     systemOverlayStyle: SystemUiOverlayStyle(
+      //       statusBarColor: Colors.transparent,
+      //       statusBarIconBrightness: Brightness.dark,
 
-        scaffoldBackgroundColor: const Color.fromARGB(255, 230, 161, 242),
-        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        // useMaterial3: true,
-      ),
+      //     ),
+      //   ),
+
+      //   scaffoldBackgroundColor: const Color.fromARGB(255, 230, 161, 242),
+      //   // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      //   // useMaterial3: true,
+      // ),
       home: const PetowPageView(),
     );
   }

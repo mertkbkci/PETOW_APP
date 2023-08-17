@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:petow_app/screens/page_view.dart';
+//import 'package:petow_app/screens/page_view.dart';
+import 'package:petow_app/screens/profile_screen.dart';
 import 'package:petow_app/screens/register_screen.dart';
 //import 'package:test_application/demos/petow_home.dart';
 
@@ -17,48 +19,52 @@ class _PetowSignInScreenState extends State<LoginScreen> with SingleTickerProvid
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
- 
+
   Future<void> _login(BuildContext context) async {
-  try {
-    UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-       
-      email: emailController.text.trim(),
-      password: passwordController.text,
-    );
-    String? uid = userCredential.user!.uid;
-    if (mounted) {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text,
+      );
+      String? uid = userCredential.user?.uid;
+
+      DatabaseReference usersRef = FirebaseDatabase.instance.ref().child('users');
+      await usersRef.child(uid ?? '').set({
+        'password': passwordController.text.trim(),
+        'email': emailController.text.trim(),
+      });
+      if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => const PetowPageView(),
+            builder: (context) => const ProfileScreen(),
           ),
         );
       }
-  } on FirebaseAuthException catch (e) {
-    if (e.code == 'user-not-found' || e.code == 'wrong-password') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Geçersiz e-posta veya şifre.'),
-          duration: Duration(seconds: 3),
-        ),
-      );
-    } else {
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found' || e.code == 'wrong-password') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Geçersiz e-posta veya şifre.'),
+            duration: Duration(seconds: 3),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Bir hata oluştu: ${e.message}'),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Bir hata oluştu: ${e.message}'),
+          content: Text('Bir hata oluştu: $e'),
           duration: const Duration(seconds: 3),
         ),
       );
     }
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Bir hata oluştu: $e'),
-        duration: const Duration(seconds: 3),
-      ),
-    );
   }
-}
-
 
   @override
   void initState() {

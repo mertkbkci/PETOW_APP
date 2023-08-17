@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:petow_app/screens/login_screen.dart';
 import 'package:petow_app/screens/profile_setting.dart';
@@ -217,12 +219,15 @@ Future<void> _showLogoutDialog(BuildContext context) async {
           ),
           TextButton(
             child: const Text('Evet'),
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async{
+              await FirebaseAuth.instance.signOut();
+              // ignore: use_build_context_synchronously
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const LoginScreen(),
                 ),
+                (route) => false,
               );
             },
           ),

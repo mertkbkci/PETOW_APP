@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 //import 'package:petow_app/layout/camera.dart';
 import 'package:petow_app/screens/send_messages.dart';
+import 'package:provider/provider.dart';
 
+import '../constant/lottie_items.dart';
+import '../theme/change_theme.dart';
 import 'about_the_app.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,21 +16,41 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   int favorite = 0;
   bool isFavorited = false;
   late String name = 'kullanici_adi';
   late Image image = Image.asset('assets/png/ic_cat4.jpg', fit: BoxFit.cover);
+  bool isLight = false;
+  late AnimationController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 230, 161, 242),
         automaticallyImplyLeading: false,
+        centerTitle: true,
         title: Image.asset(
           'assets/png/ic_petow.png',
           fit: BoxFit.contain,
           height: kToolbarHeight,
+        ),
+        leading: InkWell(
+          onTap: () async {
+            await controller.animateTo(isLight ? 0.5 : 1);
+            isLight = !isLight;
+            Future.microtask(() {
+              context.read<ThemeChanger>().changeTheme();
+            });
+          },
+          child: Lottie.asset(LottieItems.themeChange.lottiePath, repeat: false, reverse: true, controller: controller),
         ),
         actions: [
           IconButton(

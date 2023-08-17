@@ -20,6 +20,12 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
     'assets/png/ic_cat4.jpg',
   );
 
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController urlController = TextEditingController();
+  final TextEditingController bioController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,6 +100,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
                     child: TextFormField(
+                      controller: usernameController,
                       maxLength: 25,
                       decoration: _PetowInputDecorator().petowNickNameInput,
                     ),
@@ -104,6 +111,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
                     child: TextFormField(
+                      controller: fullNameController,
                       maxLength: 25,
                       decoration: _PetowInputDecorator().petowFullNameInput,
                     ),
@@ -111,6 +119,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
                     child: TextFormField(
+                      controller: urlController,
                       maxLength: 25,
                       decoration: _PetowInputDecorator().petowUrlInput,
                     ),
@@ -118,6 +127,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
                     child: TextFormField(
+                      controller: bioController,
                       maxLength: 25,
                       decoration: _PetowInputDecorator().petowBioInput,
                     ),
@@ -125,6 +135,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
                     child: TextFormField(
+                      controller: passwordController,
                       maxLength: 25,
                       decoration: _PetowInputDecorator().petowPasswordInput,
                     ),
