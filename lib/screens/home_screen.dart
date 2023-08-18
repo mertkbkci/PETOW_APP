@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 230, 161, 242),
+        backgroundColor: Theme.of(context).primaryColor, // const Color.fromARGB(255, 230, 161, 242),
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: Image.asset(
@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
         leading: InkWell(
           onTap: () async {
-            await controller.animateTo(isLight ? 0.5 : 1);
+            await controller.animateTo(!isLight ? 0.5 : 1);
             isLight = !isLight;
             Future.microtask(() {
               context.read<ThemeChanger>().changeTheme();

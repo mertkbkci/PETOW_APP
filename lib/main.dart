@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:petow_app/firebase_options.dart';
+import 'package:petow_app/navigator/navigator_routes.dart';
 //import 'package:petow_app/screens/login_screen.dart';
 import 'package:petow_app/screens/page_view.dart';
 import 'package:petow_app/screens/register_screen.dart';
@@ -62,7 +63,8 @@ class MyApp extends StatelessWidget {
       //   // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       //   // useMaterial3: true,
       // ),
-      home: const PetowPageView(),
+      routes: NavigatorRoutes().items,
+     // home: const PetowPageView(),
     );
   }
 }

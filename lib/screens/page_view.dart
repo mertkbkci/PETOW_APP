@@ -65,7 +65,7 @@ class _PageViewLearnState extends State<PetowPageView> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         shadowColor: Colors.white,
-        color: Colors.purple,
+        color: Theme.of(context).primaryColor,
         clipBehavior: Clip.hardEdge,
         surfaceTintColor: Colors.white,
         shape: const CircularNotchedRectangle(),
